@@ -1,22 +1,18 @@
-//Date Modified: 4/26/24
+//Date Modified: 5/2/24
 //This file is meant to retrieve blog files from the mongoose database
 //For example. When the blogs site is being called, the server connects to DB, retrieves blog collection, displays blogs
-
-//import express from 'express';
-//import path from 'path';
-//import mongoose from 'mongoose';
 
 const express = require('express');
 const app = express();
 //const path = require('path');
 const Blog = require('./models/blog');
-const userPass = 'ZayChu1019';
 const mongoose = require('mongoose');
+require('dotenv').config();
+const userPass = process.env.MONGODB_PASS;
 let successMSG;
 
 //accessing database
 const dbURI = `mongodb+srv://isiahianabad:${userPass}@zaynamations.f05jlxu.mongodb.net/zaynamationsDB?retryWrites=true&w=majority&appName=zaynamations`;
-
 
 mongoose.connect(dbURI)
 .then((result)=>{
