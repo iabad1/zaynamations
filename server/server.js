@@ -41,7 +41,7 @@ app.get('/blog', (req, res)=>{
 });
 
 app.use((req, res)=>{
-    res.status(404).send('./views');
+    res.status(404).send('./views/404.html');
 });
 //create error page
 
