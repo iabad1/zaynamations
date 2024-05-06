@@ -14,6 +14,9 @@ let successMSG;
 //accessing database
 const dbURI = `mongodb+srv://isiahianabad:${userPass}@zaynamations.f05jlxu.mongodb.net/zaynamationsDB?retryWrites=true&w=majority&appName=zaynamations`;
 
+//middleware
+app.use(express.urlencoded({extended: true}));
+
 mongoose.connect(dbURI)
 .then((result)=>{
     //successMSG = true;
@@ -26,11 +29,11 @@ mongoose.connect(dbURI)
 
 //get pages
 app.get('/', (req, res)=>{
-    res.redirect('/blog');
+    res.redirect('/blogs');
 });
 
-app.get('/blog', (req, res)=>{
-    Blog.find()
+app.get('/blogs', (req, res)=>{
+    Blog.find().sort({createdAt: -1})
     .then((result)=>{
         //render the view
         res.send(result);
@@ -40,24 +43,15 @@ app.get('/blog', (req, res)=>{
     })
 });
 
+app.post('/blogs', (req, res)=>{
+    const blog = new Blog(req.body);
+    blog.save()
+    .then(result=>{
+        res.redirect('/blogs')
+    })
+});
+
 app.use((req, res)=>{
-    res.status(404).send('./views/404.html');
+    res.status(404).sendFile('./views/404.html', {root: __dirname});
 });
-//create error page
-
-//module.exports = connectToMongoDB.apply();
-//export default successMSG;
-/*
-
-//routing
-console.log('Before html');
-app.get('/', (req, res)=>{
-    res.redirect('/blogs');
-})
-app.get('/blogs', (req, res)=>{
-    //respond with page
-    console.log('In middleware');
-    res.sendFile('blogs.html', {root: path.join(__dirname,'/files')});
-});
-*/
 
