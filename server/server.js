@@ -43,6 +43,21 @@ app.get('/blogs', (req, res)=>{
     })
 });
 
+//rendering one blog
+app.get('/blogs/:id', (req, res)=>{
+    const id = req.params.id;
+    Blog.findById(id)
+    .then(result => {
+        //send one blog back
+        console.log(result);
+        res.send(result);
+        
+    })
+    .catch(err =>{
+        console.log(err);
+    })
+});
+
 app.post('/blogs', (req, res)=>{
     const blog = new Blog(req.body);
     blog.save()
@@ -50,6 +65,8 @@ app.post('/blogs', (req, res)=>{
         res.redirect('/blogs')
     })
 });
+
+
 
 app.use((req, res)=>{
     res.status(404).sendFile('./views/404.html', {root: __dirname});

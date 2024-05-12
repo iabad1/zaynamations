@@ -6,9 +6,9 @@ function template() {
     <div className="nav-bar">
       <h1>zaynamations</h1>
       <ul>
-        <li>about</li>
-        <li>blogs</li>
-        <li>contact</li>
+        <li><a href="/about">about</a></li>
+        <li><a href="/blogs">blogs</a></li>
+        <li><a href="/contact">contact</a></li>
       </ul>
     </div>
   );

@@ -2,12 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import NavBar from './components/NavBar';
+import BlogPage from './components/BlogPage';
+import Blogs from './components/Blogs';
 import reportWebVitals from './reportWebVitals';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+
+
+const router = createBrowserRouter([
+  {
+    path: "/blogs",
+    element: <Blogs />,
+  },
+  {
+    path: "/blogs/:id",
+    element: <BlogPage />
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <NavBar />
+    <RouterProvider router={router}/>
   </React.StrictMode>
 );
 
