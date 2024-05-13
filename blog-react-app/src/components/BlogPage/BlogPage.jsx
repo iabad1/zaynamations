@@ -43,6 +43,13 @@ function BlogPage() {
     
   }
 
+  const discardEditBlog = () =>{
+    if(window.confirm('Discard Changes?')){
+      setInEdit(false);
+      setOutEdit(true);
+    }
+  }
+
   
 //on first render
   useEffect(()=>{
@@ -62,6 +69,8 @@ function BlogPage() {
       <div className="blog-header">
         <h1 className={'title ' + (inEdit ? 'hidden' : '')}>{blogs.title}</h1>
         <input className={'title ' + (outEdit ? 'hidden' : '')} defaultValue={blogs.title}></input>
+        
+        <button className={'title ' + (outEdit ? 'hidden' : '')} onClick={()=>{discardEditBlog()}}>Discard Changes</button>
         <button className={'title ' + (outEdit ? 'hidden' : '')} onClick={()=>{submitEditBlog()}}>Finish Editing</button>
         <h2>
           {
