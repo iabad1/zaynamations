@@ -5,22 +5,28 @@ import App from './App';
 import NavBar from './components/NavBar';
 import BlogPage from './components/BlogPage';
 import Blogs from './components/Blogs';
+import BlogForm from './components/BlogForm'
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import BlogsPage from './components/BlogsPage/BlogsPage';
 
 
 
 const router = createBrowserRouter([
   {
     path: "/blogs",
-    element: <Blogs />,
+    element: <BlogsPage />,
   },
   {
     path: "/blogs/:id",
     element: <BlogPage />
+  },
+  {
+    path: "/blogs/create",
+    element: <BlogForm />
   }
 ]);
 

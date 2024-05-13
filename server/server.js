@@ -58,11 +58,25 @@ app.get('/blogs/:id', (req, res)=>{
     })
 });
 
+//creating a new blog
 app.post('/blogs', (req, res)=>{
     const blog = new Blog(req.body);
     blog.save()
     .then(result=>{
         res.redirect('/blogs')
+    })
+});
+
+//deleting a blog 
+app.delete('/blogs/:id', (req, res)=>{
+    const id = req.params.id;
+    Blog.findByIdAndDelete(id)
+    .then(result =>{
+        res.json({redirect: '/blogs'});
+        //res.redirect('/blogs');
+    })
+    .catch(err =>{
+        console.log(err);
     })
 });
 

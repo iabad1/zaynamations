@@ -15,7 +15,7 @@ function Blogs() {
     .then(res => {
       const blogsList = res.data;
       setBlogs( blogsList );
-      //console.table(blogs);
+      console.log(blogs);
     })
     .catch(err=>{
       console.log(err);
@@ -26,6 +26,8 @@ function Blogs() {
   return (
     <>
     {
+      blogs.length === 0 ? 
+      <p>No Blogs Found.</p> :
       blogs.map(oneBlog =>(
         <a href={`/blogs/${oneBlog._id}`}>
           <Blog key={oneBlog._id} oneBlog={oneBlog} ></Blog>
@@ -33,8 +35,6 @@ function Blogs() {
       ))
 
     }
-    
-    <BlogForm />
 
     </>
     
