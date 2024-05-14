@@ -16,6 +16,7 @@ const dbURI = `mongodb+srv://isiahianabad:${userPass}@zaynamations.f05jlxu.mongo
 
 //middleware
 app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 mongoose.connect(dbURI)
 .then((result)=>{
@@ -65,6 +66,9 @@ app.post('/blogs', (req, res)=>{
     .then(result=>{
         res.redirect('/blogs')
     })
+    .catch(err=>{
+        console.log(err);
+    })
 });
 
 //deleting a blog 
@@ -79,6 +83,27 @@ app.delete('/blogs/:id', (req, res)=>{
         console.log(err);
     })
 });
+
+//updating a blog
+app.put('/blogs/:id', (req, res)=>{
+    const id = req.params.id;
+    //const updatedBlog =;
+    //console.log(id);
+    const b = JSON.stringify(req.body);
+    //const blog = {title: b.title, snippet: b.snippet, body: b.blog}
+    //console.log('SERVER REQBODY ' +  req.get('content-type'));
+    //updatedBlog.save();
+    //console.log('REQUESTBODY ' + JSON.stringifyreq.body);
+    Blog.findByIdAndUpdate(id, req.body, {new: true})
+    .then(result=>{
+        //console.log('Server Result ' + result);
+        res.status(200).send(result);
+        
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
 
 
 
