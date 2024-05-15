@@ -68,8 +68,6 @@ function BlogPage() {
       setOutEdit(true);
     }
   }
-
-
   
 //on first render
   useEffect(()=>{
@@ -90,7 +88,6 @@ function BlogPage() {
     setBody(blogs.body)
   }, [])
 
-  
 
   return (
     <div className="blog-page">
