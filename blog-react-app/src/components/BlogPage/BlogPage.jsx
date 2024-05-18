@@ -1,6 +1,7 @@
 import "./BlogPage.css";
 import {React, useState, useEffect} from "react";
 import { redirect, useParams } from "react-router-dom";
+import EditForm from '../EditForm';
 import axios from 'axios';
 
 
@@ -10,6 +11,7 @@ function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [inEdit, setInEdit] = useState(false);
   const [outEdit, setOutEdit] = useState(true);
+
   const [title, setTitle] = useState('');
   const [snippet, setSnippet] = useState('');
   const [body, setBody] = useState('');
@@ -82,6 +84,7 @@ function BlogPage() {
     })
   }, [blogs])
 
+  // use useForm instead
   useEffect(()=>{
     setTitle(blogs.title)
     setSnippet(blogs.snippet)
@@ -102,7 +105,7 @@ function BlogPage() {
           </h2>
           <h3>{blogs.snippet}</h3>
           <p>{blogs.body}</p>
-          <div className={'blog-header-del-edit ' + (inEdit ? 'hidden' : '')}>
+          <div className='blog-header-del-edit'>
             <button onClick={()=>deleteBlog(id)}>Delete</button>
             <button onClick={()=>editBlog(id)}>Edit</button>
           </div>
@@ -111,21 +114,7 @@ function BlogPage() {
 
       <div className={'edit-blog-container ' + (outEdit ? 'hidden' : '')}>
 
-        <form onSubmit={(e)=>{e.preventDefault(); submitEditBlog(id)}}>
-          <input className={'title'} defaultValue={blogs.title} onInput={e => setTitle(e.target.value)} type='text' name="title"></input>          
-          <input className={'title'} defaultValue={blogs.snippet} onInput={e => setSnippet(e.target.value)} type='text' name="snippet"></input>
-          <textarea className={'title'} defaultValue={blogs.body}  onInput={e => setBody(e.target.value)} type='textarea' name="body"></textarea>
-          <p>{title}</p>
-          <p>{body}</p>
-          <p>{snippet}</p>
-       
-        
-
-          <div className="button-container">
-            <button type='reset' className='title' onClick={()=>discardEditBlog()}>Discard Changes</button>
-            <button type='submit' className='title' >Finish Editing</button>
-          </div> 
-        </form>
+        <EditForm />
 
       </div>
       
