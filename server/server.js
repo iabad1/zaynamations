@@ -50,7 +50,7 @@ app.get('/blogs/:id', (req, res)=>{
     Blog.findById(id)
     .then(result => {
         //send one blog back
-        console.log(result);
+        //console.log(result);
         res.send(result);
         
     })
