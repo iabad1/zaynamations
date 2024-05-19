@@ -46,6 +46,9 @@ function BlogPage() {
   
   const discardEditBlog = () =>{
     if(window.confirm('Discard Changes?')){
+      setTitle(blog.title)
+      setSnippet(blog.snippet)
+      setBody(blog.body)
       setInEdit(false);
       setOutEdit(true);
     }
