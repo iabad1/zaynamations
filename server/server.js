@@ -44,6 +44,18 @@ app.get('/blogs', (req, res)=>{
     })
 });
 
+//featured blogs
+app.get('/blogs/featured', (req, res)=>{
+    Blog.find().sort({isFeatured: -1})
+    .then((result)=>{
+        //render the view
+        res.send(result);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+});
+
 //rendering one blog
 app.get('/blogs/:id', (req, res)=>{
     const id = req.params.id;
