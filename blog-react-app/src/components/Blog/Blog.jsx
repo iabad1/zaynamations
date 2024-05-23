@@ -18,6 +18,8 @@ function Blog({oneBlog}) {
       <h2>{oneBlog.title}</h2>
       <h3>{oneBlog.snippet}</h3>
       <p>{oneBlog.body}</p>
+      <p>{(oneBlog.isFeatured  ? 'True' : 'False')}</p>
+
     </li>
    </ul>
    

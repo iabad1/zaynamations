@@ -16,6 +16,10 @@ const blogSchema = Schema({
         type: String,
         required: true
     },
+    isFeatured:{
+        type: Boolean,
+        required: true
+    },
 
 }, {timestamps: true});
 

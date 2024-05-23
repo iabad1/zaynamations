@@ -10,11 +10,12 @@ import axios from 'axios';
 function Blogs() {
 
   const [blogs, setBlogs] = useState([]);
-  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+  //const [featuredBlogs, setFeaturedBlogs] = useState([]);
 
   useEffect(()=>{
     axios.get('/blogs')
     .then(res => {
+      console.log(res.data);
       const blogsList = res.data;
       setBlogs( blogsList );
       console.log(blogs);
@@ -25,20 +26,6 @@ function Blogs() {
   }, [])
 
  
-    useEffect(()=>{
-        axios.get('/blogs/featured')
-        .then(result =>{
-            setFeaturedBlogs(result.data);
-            console.log('Test');
-            console.log(blogs);
-
-        })
-        .catch(err =>{
-            console.log(err);
-        })
-    }, [])
-  
-
   return (
     <>
     
@@ -53,7 +40,7 @@ function Blogs() {
       }
 
       <div className='featured-blogs'>
-        <FeaturedBlogs featuredBlogs={featuredBlogs} />
+        <FeaturedBlogs blogs={blogs} />
       </div>
     
 

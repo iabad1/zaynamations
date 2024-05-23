@@ -45,7 +45,7 @@ app.get('/blogs', (req, res)=>{
 });
 
 //featured blogs
-app.get('/blogs/featured', (req, res)=>{
+app.get('/blogs/featured-sorted', (req, res)=>{
     Blog.find().sort({isFeatured: -1})
     .then((result)=>{
         //render the view
