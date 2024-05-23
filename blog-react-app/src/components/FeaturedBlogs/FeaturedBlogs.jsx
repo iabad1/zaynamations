@@ -5,19 +5,13 @@ import {useState} from 'react';
 const FeaturedBlogs = ({blogs}) =>{
     
     
-   
-    //console.log(REMAIN_COUNT);
-
     //setting initial values 
-    
-    
     const [currentFeatCount, setCurrentFeatCount] = useState(0);
     const [remainCount, setRemainCount] = useState(0);
+    
+    const [initialFeatures, setInitialFeatures] = useState([]);
     const [updatedFeatures, setUpdatedFeatures] = useState([]);
 
-    
-
-   // useEffect(()=>{
         blogs.sort((b1, b2) =>{
             if(b1.isFeatured === b2.isFeatured){
                 return 0;
@@ -32,6 +26,8 @@ const FeaturedBlogs = ({blogs}) =>{
         
         useEffect(()=>{
             const featuredBlogs = blogs.filter(oneBlog => (oneBlog.isFeatured === true));
+            setInitialFeatures(featuredBlogs);
+            console.table(initialFeatures);
             const FEATURED_BLOG_COUNT = featuredBlogs.length;
             setCurrentFeatCount(FEATURED_BLOG_COUNT);
         }, [blogs])
@@ -44,13 +40,8 @@ const FeaturedBlogs = ({blogs}) =>{
             setRemainCount(FEATURED_TOTAL - currentFeatCount);
         }, [currentFeatCount])
         
-        
-       
-        //setRemainCount(REMAIN_COUNT);
-        //console.log('Current remain count :' + REMAIN_COUNT);
-    //}, []);
-   
     
+    //This function sets the newly updated list for update request
     const setChecked = (checked, oneBlog) =>{
         //check if the current input is selected or not
         
@@ -59,33 +50,42 @@ const FeaturedBlogs = ({blogs}) =>{
         if(remainCount >= 0 && remainCount <= 5){
             if(checked){
                 setCurrentFeatCount(currentFeatCount + 1);
-                newFeatures = {id: oneBlog._id, isFeatured: true};
             }
             else{
                 setCurrentFeatCount(currentFeatCount - 1);
-                newFeatures = {id: oneBlog._id, isFeatured: false};
             }
-            //setRemainCount(5 - currentFeatCount);
-            //check if the checked or unchecked blog was updated
-            //compare features to updatedFeatures
-            //console.log(._id);
-            /*
-            const foundBlog = featuredBlogs.find(b1 => b1._id === oneBlog._id);
-            const needsUpdating = foundBlog.isFeatured === newFeatures.isFeatured;
-            console.log(foundBlog);
+            newFeatures = {id: oneBlog._id, isFeatured: checked};
+
             
-            if(needsUpdating){
-                //set updated array
-                setUpdatedFeatures([...updatedFeatures, newFeatures])
-            }
-            else{
-                //remove from updated array if initially unchecked, checked, then unchecked
-                if(updatedFeatures.find(u=> u._id === newFeatures._id )){
-                    setUpdatedFeatures(updatedFeatures.filter(upFeat => upFeat.id !== newFeatures.id ))
+            //Determining the blogs in need of an update
+            const foundBlog = initialFeatures.find(b1 => b1._id === oneBlog._id);
+            if(foundBlog){
+                
+                const needsUpdating = foundBlog.isFeatured !== newFeatures.isFeatured;
+                
+                if(needsUpdating){
+                    //set updated array
+                    setUpdatedFeatures([...updatedFeatures, newFeatures]);
+                }
+                else{
+                    //remove from updated array if initially unchecked, checked, then unchecked
+                    if(updatedFeatures.find(u=> u._id === newFeatures._id )){
+                        setUpdatedFeatures(updatedFeatures.filter(upFeat => upFeat.id !== newFeatures.id ));
+                    }
                 }
             }
-            */
-            
+            //not found in initial list
+            else{
+                //check in updated list
+                const foundUpdated = updatedFeatures.find(f1 => f1.id === oneBlog._id);
+                if(foundUpdated){
+                    setUpdatedFeatures(updatedFeatures.filter(upFeat => upFeat.id !== newFeatures.id ));
+                }
+                else{
+                    setUpdatedFeatures([...updatedFeatures, newFeatures]);
+                }
+            }
+
         }
         
     }
@@ -95,6 +95,12 @@ const FeaturedBlogs = ({blogs}) =>{
     //on submit, get the list of updated objects with given isFeatured values
     // {filter: <blogId>, isFeatured}
     // [{id: <id1>, isFeatured: false }, {id: <id2>, isFeatured: true } ]
+
+    const onFeaturesSubmit = (updatedFeatures) =>{
+        console.log('Saving Features...');
+        console.log(updatedFeatures);
+
+    }
   
 
     return(
@@ -102,6 +108,7 @@ const FeaturedBlogs = ({blogs}) =>{
         <div className="blogs-list-container">
         <p>{currentFeatCount}/5 featured</p>
         <p>{remainCount} remaining </p>
+        
         
             {   
                 blogs.map((oneBlog) =>(
@@ -117,12 +124,29 @@ const FeaturedBlogs = ({blogs}) =>{
                 
                 
             }
+             <button onClick={()=>{onFeaturesSubmit(updatedFeatures)}} disabled={updatedFeatures.length === 0}>Save Featured</button>
+    
 
-            <p>Currently Selected:
-                {}
+            <p>Initial Selected:</p>
+            
+            {
+                initialFeatures.map(f=>(
+                    <p>
+                    {f._id}</p>
+                ))
+            }
 
-            </p>
-        
+            <p>Needs Updating:</p>
+                
+               
+                {
+                    updatedFeatures.map(f=>(
+                        <p>
+                        {f.id}</p>
+                    ))
+                }
+                
+               
         </div>
     )
 
