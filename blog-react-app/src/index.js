@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import NavBar from './components/NavBar';
+import About from './components/About';
 import BlogPage from './components/BlogPage';
-import Blogs from './components/Blogs';
-import BlogForm from './components/BlogForm'
+import BlogForm from './components/BlogForm';
+import Root from './components/Root'
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
-  RouterProvider,
+  createRoutesFromElements,
+  RouterProvider, Route,
 } from "react-router-dom";
 import BlogsPage from './components/BlogsPage/BlogsPage';
+import BlogsLayout from './components/BlogsLayout/BlogsLayout';
 
-
-
-const router = createBrowserRouter([
+/*
+[
   {
     path: "/blogs",
     element: <BlogsPage />,
@@ -28,12 +28,26 @@ const router = createBrowserRouter([
     path: "/blogs/create",
     element: <BlogForm />
   }
-]);
+]
+*/
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Root />}>
+      <Route index path="about" element={<About />} />
+      <Route path="blogs" element={<BlogsLayout />} >
+        <Route index element={<BlogsPage />} />
+        <Route path="create" element={<BlogForm />} />
+        <Route path=":id" element={<BlogPage />} />
+      </Route>
+    </Route>
+  )
+
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <NavBar />
     <RouterProvider router={router}/>
   </React.StrictMode>
 );

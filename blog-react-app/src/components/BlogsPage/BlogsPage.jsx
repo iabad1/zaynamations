@@ -1,6 +1,7 @@
 import "./BlogsPage.css";
 import React from "react";
 import Blogs from '../Blogs';
+import {Link} from 'react-router-dom';
 
 function BlogsPage() {
   return (
@@ -16,7 +17,7 @@ function BlogsPage() {
         <section className="featured-blogs">
           <div className="featured-blogs-header">
             <h3>Featured</h3>
-            <a href="/blogs/create">Create Post +</a> 
+            <Link to="create">Create Post +</Link> 
           </div>
           {/* Create a new parent component for featured and all blogs*/}
           <div className="featured-blogs-container">
@@ -30,7 +31,6 @@ function BlogsPage() {
         </section>
 
       </div>
-
     </div>
   );
 };

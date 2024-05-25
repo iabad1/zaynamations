@@ -1,5 +1,5 @@
 import {React, useEffect } from "react";
-import './FeaturedBlogs.css'
+import './FeaturedBlogs.css';
 import {useState} from 'react';
 
 const FeaturedBlogs = ({blogs}) =>{

@@ -2,8 +2,8 @@ import "./Blogs.css";
 
 import {React, useEffect, useState} from "react";
 import Blog from "../Blog";
-import BlogForm from "../BlogForm";
 import FeaturedBlogs from '../FeaturedBlogs';
+
 import axios from 'axios';
 
 
@@ -33,9 +33,9 @@ function Blogs() {
       blogs.length === 0 ? 
       <p>No Blogs Found.</p> :
       blogs.map(oneBlog =>(
-        <a href={`/blogs/${oneBlog._id}`}>
+        
           <Blog key={oneBlog._id} oneBlog={oneBlog} ></Blog>
-        </a>
+        
       ))
       }
 

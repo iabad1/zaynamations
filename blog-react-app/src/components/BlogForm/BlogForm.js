@@ -59,8 +59,8 @@ function BlogForm(){
         {/* Add radio input for featured*/}
         <button>Submit</button>
     </form>
-
   </div>
+
   );
 }
 

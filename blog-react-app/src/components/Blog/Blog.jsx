@@ -1,5 +1,7 @@
 import "./Blog.css";
 import React from "react";
+import {Link} from 'react-router-dom';
+
 
 const createDate = (blogDate) =>{
   let date = new Date(blogDate);
@@ -13,6 +15,7 @@ function Blog({oneBlog}) {
   return (
   
    <ul>
+    <Link to={oneBlog._id}>
     <li className="blog">
       <h2>{createDate(oneBlog.createdAt)}</h2>
       <h2>{oneBlog.title}</h2>
@@ -21,6 +24,7 @@ function Blog({oneBlog}) {
       <p>{(oneBlog.isFeatured  ? 'True' : 'False')}</p>
 
     </li>
+    </Link>
    </ul>
    
   );
