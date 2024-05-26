@@ -1,9 +1,27 @@
 import "./BlogsPage.css";
-import React from "react";
+import {React, useState, useEffect} from "react";
 import Blogs from '../Blogs';
-import {Link} from 'react-router-dom';
+import axios from 'axios';
+
 
 function BlogsPage() {
+
+  const [blogs, setBlogs] = useState([]);
+  //const [featuredBlogs, setFeaturedBlogs] = useState([]);
+
+  useEffect(()=>{
+    axios.get('/blogs')
+    .then(res => {
+      console.log(res.data);
+      const blogsList = res.data;
+      setBlogs( blogsList );
+      console.log(blogs);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }, [])
+
   return (
     <div className="blogs-page">
       <header>
@@ -14,21 +32,7 @@ function BlogsPage() {
 
       <div className="blogs-container">
 
-        <section className="featured-blogs">
-          <div className="featured-blogs-header">
-            <h3>Featured</h3>
-            <Link to="create">Create Post +</Link> 
-          </div>
-          {/* Create a new parent component for featured and all blogs*/}
-          <div className="featured-blogs-container">
-            <Blogs />
-          </div>
-        </section>
-
-        <section className="all-blogs">
-          <div className="all-blogs-container">
-          </div>
-        </section>
+        <Blogs blogs={blogs} />
 
       </div>
     </div>

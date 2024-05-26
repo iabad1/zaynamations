@@ -10,22 +10,18 @@ const createDate = (blogDate) =>{
   return stringDate;
 }
 
-function Blog({oneBlog}) {
+function Blog({oneBlog, index}) {
 
   return (
   
-   <ul>
-    <Link to={oneBlog._id}>
     <li className="blog">
-      <h2>{createDate(oneBlog.createdAt)}</h2>
-      <h2>{oneBlog.title}</h2>
-      <h3>{oneBlog.snippet}</h3>
-      <p>{oneBlog.body}</p>
-      <p>{(oneBlog.isFeatured  ? 'True' : 'False')}</p>
-
+      <Link to={oneBlog._id}>
+        <h2>{createDate(oneBlog.createdAt)}</h2>
+        <h2>{oneBlog.title}</h2>
+        {index === 0 && <p> Snippet : {oneBlog.snippet}</p>}
+        <p>{(oneBlog.isFeatured  ? 'True' : 'False')}</p>
+      </Link>
     </li>
-    </Link>
-   </ul>
    
   );
 };
