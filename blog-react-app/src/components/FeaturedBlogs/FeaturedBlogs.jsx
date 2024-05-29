@@ -41,21 +41,25 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
         const id = oneBlog._id;
         const initFeatIds = initFeatBlogs.map(f=> f.id);
         
-        if(checked){
-            setCurrFeatCount(count => count + 1);
+        //preventing out of bounds values
+        if(remainCount >= 0 && remainCount <= 5 ){
+            if(checked){
+                setCurrFeatCount(count => count + 1);
+            }
+            else{
+                setCurrFeatCount(count => count - 1);
+            }
+            //add to updated if blog is not in initial features
+            //remove from updated if blog is not in initial and is in udpdated  
+            const isInInitial = initFeatIds.includes(id);
+            if(!isInInitial && !updatedFeatures.includes(id)){
+                setUpdatedFeatures([...updatedFeatures, id]);
+            }
+            if(!isInInitial && updatedFeatures.includes(id)){
+                setUpdatedFeatures(updatedFeatures.filter(f=>f !== id));
+            }
         }
-        else{
-            setCurrFeatCount(count => count - 1);
-        }
-        //add to updated if blog is not in initial features
-        //remove from updated if blog is not in initial and is in udpdated  
-        const isInInitial = initFeatIds.includes(id);
-        if(!isInInitial && !updatedFeatures.includes(id)){
-            setUpdatedFeatures([...updatedFeatures, id]);
-        }
-        if(!isInInitial && updatedFeatures.includes(id)){
-            setUpdatedFeatures(updatedFeatures.filter(f=>f !== id));
-        }
+        
         
     }
     const onFeaturesSubmit = () =>{
@@ -93,7 +97,8 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
             
                     <label>
                         <input type='checkbox' name='blogCheckBox' defaultChecked={oneBlog.isFeatured} 
-                            disabled={(remainCount === 0 && !(oneBlog.isFeatured))} onChange={(e)=>{onChecked(e.target.checked, oneBlog)}}/>
+                             onChange={(e)=>{onChecked(e.target.checked, oneBlog)}} disabled={(remainCount === 0 || remainCount > 5) && 
+                             ((!(oneBlog.isFeatured)) && !(updatedFeatures.includes(oneBlog._id)))}/>
                         {oneBlog.title}
                     </label>
                 </div>
