@@ -98,7 +98,7 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
                     <label>
                         <input type='checkbox' name='blogCheckBox' defaultChecked={oneBlog.isFeatured} 
                              onChange={(e)=>{onChecked(e.target.checked, oneBlog)}} disabled={(remainCount === 0 || remainCount > 5) && 
-                             ((!(oneBlog.isFeatured)) && !(updatedFeatures.includes(oneBlog._id)))}/>
+                             (((!(oneBlog.isFeatured)) && !(updatedFeatures.includes(oneBlog._id))) || ((oneBlog.isFeatured) && (updatedFeatures.includes(oneBlog._id))))}/>
                         {oneBlog.title}
                     </label>
                 </div>

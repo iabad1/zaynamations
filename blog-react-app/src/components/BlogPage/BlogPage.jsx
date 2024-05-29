@@ -124,18 +124,15 @@ function BlogPage() {
       <div className={'edit-blog-container ' + (outEdit ? 'hidden' : '')}>
 
       <div className='edit-form'>
-      <form onSubmit={(e)=>{e.preventDefault(); submitEditBlog(id)}}>
+      <form>
           <input className={'title'} value={title} onChange={e => setTitle(e.target.value)} type='text' name="title" required></input>          
           <input className={'title'} minLength={0} value={snippet} onChange={e => setSnippet(e.target.value)} type='text' name="snippet" required></input>
           <textarea className={'title'} minLength={0} value={body}   onChange={e => setBody(e.target.value)} type='textarea' name="body" required></textarea>
-          <p>{title}</p>
-          <p>{body}</p>
-          <p>{snippet}</p>
-       
+          
         
           <div className="button-container">
-            <button type='reset' className='title' onClick={()=>discardEditBlog()}>Discard Changes</button>
-            <button type='submit' className='title' >Finish Editing</button>
+            <button className='title' onClick={()=>discardEditBlog()}>Discard Changes</button>
+            <button type='submit' className='title' onClick={(e)=>{e.preventDefault(); submitEditBlog(id)}}>Finish Editing</button>
           </div> 
         </form>
       </div>
