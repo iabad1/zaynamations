@@ -61,8 +61,19 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
     const onFeaturesSubmit = () =>{
         //check if the updated features are within the currentFeature blogs
         //update in mongoDB
+        console.log('Updating...');
+        console.log(updatedFeatures);
         
-        console.log();
+        axios.put('/blogs', updatedFeatures)
+        .then(result=>{
+            console.log(result.data);
+            
+            window.location.href = result.data.redirect;
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+        
     }
     const discardChanges = () =>{
         //reset to initial values
@@ -90,7 +101,7 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
                 
                 
             }
-             <button onSubmit={(e)=>{e.preventDefault(); onFeaturesSubmit()}} disabled={updatedFeatures.length === 0}>Save Featured</button>
+             <button  type="submit" onClick={(e)=>{e.preventDefault(); onFeaturesSubmit()}} disabled={updatedFeatures.length === 0}>Save Featured</button>
              <button  onClick={()=>{ discardChanges()}}>Discard</button>
         </form>
     

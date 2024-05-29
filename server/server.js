@@ -117,15 +117,16 @@ app.put('/blogs/:id', (req, res)=>{
     })
 })
 
-app.put('/blogs/featured-sorted', (req, res)=>{
-    console.log(req.body);
-    const updatedFeatures = req.body;
-    const ids = updatedFeatures.map(f=> f.id);
+app.put('/blogs', (req, res)=>{
+    
+    const ids = req.body;
+    console.log(ids);
+    //const ids = updatedFeatures.map(f=> f.id);
     Blog.updateMany(
-        {_ids: {$in: ids}},
-        [{ $set: {"isFeatured" : {$not: [false, "$isFeatured"]}}}]
+        {_id: {$in: ids}},
+        [{ $set: {isFeatured : {$eq: [false, "$isFeatured"]}}}]
     )
-    .then(result=> res.json({redirect: '/blogs'}))
+    .then(result=>{ console.log(result); res.json({redirect: '/blogs'});})
     .catch(err=>{
         console.log(err);
     })

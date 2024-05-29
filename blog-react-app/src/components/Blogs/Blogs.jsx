@@ -9,9 +9,14 @@ import axios from 'axios';
 function Blogs({blogs}) {
 
   const [hideFeatures, setHideFeatures] = useState(true);
+  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+  
+  useEffect(()=>{
+    const feat = blogs.filter(f=>f.isFeatured);
+    setFeaturedBlogs(feat);
+  }, [blogs])
 
   /*
-  const [featuredBlogs, setFeaturedBlogs] = useState([]);
 
   useEffect(()=>{
     axios.get('/blogs/featured-sorted')
@@ -31,7 +36,7 @@ function Blogs({blogs}) {
             <Link to="create">Create Post +</Link>
             <button onClick={()=>{setHideFeatures(!hideFeatures)}} className={!hideFeatures && 'hideFeatures'}><u>Customize Features</u></button>
             <div className={hideFeatures && 'hideFeatures'} >
-              <FeaturedBlogs blogs={blogs} setHideFeatures={setHideFeatures}/>
+              <FeaturedBlogs setHideFeatures={setHideFeatures}/>
             </div>
           </div>
           {/* Create a new parent component for featured and all blogs*/}
@@ -39,9 +44,8 @@ function Blogs({blogs}) {
             
           <ul> 
             {
-              blogs.map((oneBlog, index) =>(
-                 oneBlog.isFeatured && <Blog key={oneBlog._id} oneBlog={oneBlog} index={index}/>
-                
+             featuredBlogs.map((oneBlog, index) =>(
+                 <Blog key={oneBlog._id} oneBlog={oneBlog} index={index}/>
               ))
             }
             </ul>
