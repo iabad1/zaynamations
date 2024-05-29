@@ -1,11 +1,124 @@
 import {React, useEffect } from "react";
 import './FeaturedBlogs.css';
 import {useState} from 'react';
+import axios from 'axios';
 
-const FeaturedBlogs = ({blogs}) =>{
+
+const FeaturedBlogs = ({setHideFeatures}) =>{
+
+     
+    const [initFeatBlogs, setInitFeatBlogs] = useState([]);
+    const [updatedFeatures, setUpdatedFeatures] = useState([]);
+    const [remainCount, setRemainCount] = useState(0);
+    const [currFeatCount, setCurrFeatCount] = useState(0);
     
+    useEffect(()=>{
+        axios.get('/blogs/featured-sorted')
+        .then(result=>{ 
+           //console.log(result.data);
+            const init = result.data; 
+            setInitFeatBlogs(init);
+            const feat = init.filter(f => f.isFeatured); 
+            setCurrFeatCount(feat.length);
+            console.log("Re-Rendered!!");
+            //return {featureSorted: blogsSortedByFilter, initFeaturedBlogs: featuredBlogs }
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+    }, [])
+
+    //on re-render
+    useEffect(()=>{
+        
+        setRemainCount(5 - currFeatCount);
+        
+    }, [currFeatCount]);
     
+
+    const onChecked = (checked, oneBlog) =>{
+        //update updatedFeatures list
+        const id = oneBlog._id;
+        const initFeatIds = initFeatBlogs.map(f=> f.id);
+        
+        if(checked){
+            setCurrFeatCount(count => count + 1);
+        }
+        else{
+            setCurrFeatCount(count => count - 1);
+        }
+        //add to updated if blog is not in initial features
+        //remove from updated if blog is not in initial and is in udpdated  
+        const isInInitial = initFeatIds.includes(id);
+        if(!isInInitial && !updatedFeatures.includes(id)){
+            setUpdatedFeatures([...updatedFeatures, id]);
+        }
+        if(!isInInitial && updatedFeatures.includes(id)){
+            setUpdatedFeatures(updatedFeatures.filter(f=>f !== id));
+        }
+        
+    }
+    const onFeaturesSubmit = () =>{
+        //check if the updated features are within the currentFeature blogs
+        //update in mongoDB
+        
+        console.log();
+    }
+    const discardChanges = () =>{
+        //reset to initial values
+        setCurrFeatCount(initFeatBlogs.length);
+        setUpdatedFeatures([]);
+    }
+
+    return(
+    <div className="blogs-list-container">
+        <p>{currFeatCount}/5 featured</p>
+        <p>{remainCount} remaining</p>
+        
+        <form>
+            {   
+                initFeatBlogs.map((oneBlog) =>(
+                <div className="blogs-list">
+            
+                    <label>
+                        <input type='checkbox' name='blogCheckBox' defaultChecked={oneBlog.isFeatured} 
+                            disabled={(remainCount === 0 && !(oneBlog.isFeatured))} onChange={(e)=>{onChecked(e.target.checked, oneBlog)}}/>
+                        {oneBlog.title}
+                    </label>
+                </div>
+                ))
+                
+                
+            }
+             <button onSubmit={(e)=>{e.preventDefault(); onFeaturesSubmit()}} disabled={updatedFeatures.length === 0}>Save Featured</button>
+             <button  onClick={()=>{ discardChanges()}}>Discard</button>
+        </form>
+    
+
+            <p>Initial Selected:</p>
+            
+            {
+                initFeatBlogs.map(f=>(
+                    <p>
+                    {f._id}</p>
+                ))
+            }
+
+            <p>Needs Updating:</p>
+                {
+                    updatedFeatures.map(f=>(
+                        <p>
+                        {f}</p>
+                    ))
+                }
+                
+        </div>
+    )
+    
+
+    /*
     //setting initial values 
+    const [initialFeatCount, setInitialFeatCount] = useState(0);
     const [currentFeatCount, setCurrentFeatCount] = useState(0);
     const [remainCount, setRemainCount] = useState(0);
     
@@ -26,17 +139,15 @@ const FeaturedBlogs = ({blogs}) =>{
         
         useEffect(()=>{
             const featuredBlogs = blogs.filter(oneBlog => (oneBlog.isFeatured === true));
-            setInitialFeatures(featuredBlogs);
-            console.table(initialFeatures);
+            //console.table(initialFeatures);
             const FEATURED_BLOG_COUNT = featuredBlogs.length;
+            setInitialFeatures(featuredBlogs);
+            setInitialFeatCount(FEATURED_BLOG_COUNT);
             setCurrentFeatCount(FEATURED_BLOG_COUNT);
         }, [blogs])
         
         useEffect(()=>{
             const FEATURED_TOTAL = 5;
-            
-            //const FEATURED_BLOG_COUNT = featuredBlogs.length;
-            //let REMAIN_COUNT = FEATURED_TOTAL - FEATURED_BLOG_COUNT;
             setRemainCount(FEATURED_TOTAL - currentFeatCount);
         }, [currentFeatCount])
         
@@ -99,8 +210,22 @@ const FeaturedBlogs = ({blogs}) =>{
     const onFeaturesSubmit = (updatedFeatures) =>{
         console.log('Saving Features...');
         console.log(updatedFeatures);
+        
+        axios.put('/blogs', updatedFeatures)
+        .then(result=>{
+            window.location.href = result.data.redirect;
+        })
+        .catch(err=> console.log(err));
 
     }
+
+    const discardChanges = () =>{
+        
+        //setCurrentFeatCount(initialFeatCount); 
+        setUpdatedFeatures([]); 
+        setHideFeatures(true);
+    }
+    
   
 
     return(
@@ -109,7 +234,7 @@ const FeaturedBlogs = ({blogs}) =>{
         <p>{currentFeatCount}/5 featured</p>
         <p>{remainCount} remaining </p>
         
-        
+        <form>
             {   
                 blogs.map((oneBlog) =>(
                 <div className="blogs-list">
@@ -124,7 +249,9 @@ const FeaturedBlogs = ({blogs}) =>{
                 
                 
             }
-             <button onClick={()=>{onFeaturesSubmit(updatedFeatures)}} disabled={updatedFeatures.length === 0}>Save Featured</button>
+             <button onClick={(e)=>{e.preventDefault(); onFeaturesSubmit(updatedFeatures)}} disabled={updatedFeatures.length === 0}>Save Featured</button>
+             <input type="reset" onClick={()=>{ discardChanges()}} value="Discard"/>
+        </form>
     
 
             <p>Initial Selected:</p>
@@ -149,7 +276,7 @@ const FeaturedBlogs = ({blogs}) =>{
                
         </div>
     )
-
+    */
 }
 
 export default FeaturedBlogs;

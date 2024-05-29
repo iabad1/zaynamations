@@ -117,7 +117,19 @@ app.put('/blogs/:id', (req, res)=>{
     })
 })
 
-
+app.put('/blogs/featured-sorted', (req, res)=>{
+    console.log(req.body);
+    const updatedFeatures = req.body;
+    const ids = updatedFeatures.map(f=> f.id);
+    Blog.updateMany(
+        {_ids: {$in: ids}},
+        [{ $set: {"isFeatured" : {$not: [false, "$isFeatured"]}}}]
+    )
+    .then(result=> res.json({redirect: '/blogs'}))
+    .catch(err=>{
+        console.log(err);
+    })
+});
 
 app.use((req, res)=>{
     res.status(404).sendFile('./views/404.html', {root: __dirname});

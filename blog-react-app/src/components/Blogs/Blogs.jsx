@@ -1,22 +1,37 @@
 import "./Blogs.css";
 
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import Blog from "../Blog";
 import FeaturedBlogs from '../FeaturedBlogs';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 function Blogs({blogs}) {
 
-  const [hideFeature, sethideFeature] = useState(true);
+  const [hideFeatures, setHideFeatures] = useState(true);
+
+  /*
+  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+
+  useEffect(()=>{
+    axios.get('/blogs/featured-sorted')
+    .then(result=>{
+        setFeaturedBlogs(result.data);
+    })
+    .catch(err=>{
+        console.log(err);
+    });
+}, [blogs]);
+*/
   return (
     <>
     
     <section className="featured-blogs">
           <div className="featured-blogs-header">
             <Link to="create">Create Post +</Link>
-            <button onClick={()=>{sethideFeature(!hideFeature)}}><u>Customize Features</u></button>
-            <div className={hideFeature && 'hideFeature'} >
-              <FeaturedBlogs blogs={blogs}/>
+            <button onClick={()=>{setHideFeatures(!hideFeatures)}} className={!hideFeatures && 'hideFeatures'}><u>Customize Features</u></button>
+            <div className={hideFeatures && 'hideFeatures'} >
+              <FeaturedBlogs blogs={blogs} setHideFeatures={setHideFeatures}/>
             </div>
           </div>
           {/* Create a new parent component for featured and all blogs*/}
