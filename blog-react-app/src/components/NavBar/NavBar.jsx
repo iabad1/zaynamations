@@ -6,7 +6,7 @@ function template() {
     <div className="nav-bar">
       <h1>zaynamations</h1>
       <ul>
-        <li><a href="/about">about</a></li>
+        <li><a href="/">about</a></li>
         <li><a href="/blogs">blogs</a></li>
         <li><a href="/contact">contact</a></li>
       </ul>

@@ -22,6 +22,7 @@ mongoose.connect(dbURI)
 .then((result)=>{
     //successMSG = true;
     app.listen(5000);
+    console.log(dbURI);
 
 })
 .catch((err) => {
@@ -46,7 +47,7 @@ app.get('/blogs', (req, res)=>{
 
 //featured blogs
 app.get('/blogs/featured-sorted', (req, res)=>{
-    Blog.find().sort({isFeatured: -1})
+    Blog.find().sort({isFeatured: -1, createdAt: -1})
     .then((result)=>{
         //render the view
         res.send(result);

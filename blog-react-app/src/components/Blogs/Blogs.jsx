@@ -6,7 +6,7 @@ import FeaturedBlogs from '../FeaturedBlogs';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
-function Blogs({blogs}) {
+const Blogs = ({blogs}) => {
 
   const [hideFeatures, setHideFeatures] = useState(true);
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
@@ -45,7 +45,7 @@ function Blogs({blogs}) {
           <ul> 
             {
              featuredBlogs.map((oneBlog, index) =>(
-                 <Blog key={oneBlog._id} oneBlog={oneBlog} index={index}/>
+                 <Blog key={oneBlog._id} oneBlog={oneBlog} index={index} />
               ))
             }
             </ul>

@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 
-function BlogPage() {
+const BlogPage = () => {
 
   const [blog, setBlogs] = useState([]);
   const [title, setTitle] = useState('');

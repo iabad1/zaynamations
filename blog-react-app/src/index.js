@@ -9,7 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  RouterProvider, Route,
+  RouterProvider, Route, BrowserRouter
 } from "react-router-dom";
 import BlogsPage from './components/BlogsPage/BlogsPage';
 import BlogsLayout from './components/BlogsLayout/BlogsLayout';
@@ -33,8 +33,8 @@ import BlogsLayout from './components/BlogsLayout/BlogsLayout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Root />}>
-      <Route index path="about" element={<About />} />
+    <Route path='/' element={<Root />}>
+      <Route index element={<About />} />
       <Route path="blogs" element={<BlogsLayout />} >
         <Route index element={<BlogsPage />} />
         <Route path="create" element={<BlogForm />} />

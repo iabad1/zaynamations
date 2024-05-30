@@ -36,6 +36,13 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
     }, [currFeatCount]);
     
 
+    const createDate = (blogDate) =>{
+        let date = new Date(blogDate);
+        let month = date.toLocaleString('default', {month: 'long'})
+        let stringDate = month + ' ' + date.getDate() + ', ' + date.getFullYear();
+        return stringDate;
+      }
+
     const onChecked = (checked, oneBlog) =>{
         //update updatedFeatures list
         const id = oneBlog._id;
@@ -91,21 +98,32 @@ const FeaturedBlogs = ({setHideFeatures}) =>{
         <p>{remainCount} remaining</p>
         
         <form>
+       
             {   
                 initFeatBlogs.map((oneBlog) =>(
-                <div className="blogs-list">
+                
             
-                    <label>
-                        <input type='checkbox' name='blogCheckBox' defaultChecked={oneBlog.isFeatured} 
-                             onChange={(e)=>{onChecked(e.target.checked, oneBlog)}} disabled={(remainCount === 0 || remainCount > 5) && 
-                             (((!(oneBlog.isFeatured)) && !(updatedFeatures.includes(oneBlog._id))) || ((oneBlog.isFeatured) && (updatedFeatures.includes(oneBlog._id))))}/>
-                        {oneBlog.title}
-                    </label>
-                </div>
+                    <div className="blogs-list-item-container">
+                        <div className="blogs-list-item">
+                            <label>
+                                <input type='checkbox' name='blogCheckBox' defaultChecked={oneBlog.isFeatured} 
+                                    onChange={(e)=>{onChecked(e.target.checked, oneBlog)}} disabled={(remainCount === 0 || remainCount > 5) && 
+                                    (((!(oneBlog.isFeatured)) && !(updatedFeatures.includes(oneBlog._id))) || ((oneBlog.isFeatured) && (updatedFeatures.includes(oneBlog._id))))}/>
+                                Title: {oneBlog.title}
+                            </label>
+                        </div>
+                        <div className="blogs-list-item">
+                            <label>
+                                Created At: {createDate(oneBlog.createdAt)}
+                            </label>
+                        </div>
+                    </div>
+                    
                 ))
                 
                 
             }
+        
              <button  type="submit" onClick={(e)=>{e.preventDefault(); onFeaturesSubmit()}} disabled={updatedFeatures.length === 0}>Save Featured</button>
              <button  onClick={()=>{ discardChanges()}}>Discard</button>
         </form>
